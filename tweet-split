@@ -1,0 +1,29 @@
+var fs = require('fs'),
+    filename = process.argv[2] || 'tweet-split.txt'; // check if there's an argument, otherwise it will set to default.
+
+// read the file and process
+fs.readFile(filename, 'utf8', function(err, data) {
+    
+    // in case we need to call houston
+    if (!err) {
+        // now I am just using plain js
+
+        // remove all line breaks
+        var text = data.replace(/\n/g, ' ');
+
+        // split tweets
+        // note: I removed 6 spaces from the tweet to make room for the indexing.
+        // It might need a bit of TLC to improve and work without this dirty hack
+        // but it's just a dirty hack to avoid spending too much time on this
+        var tweets = text.match(/[\s\S]{1,134}/g);
+
+        // simple loop through all tweets
+        for (var i = 0; i < tweets.length; i++) {
+            // concatenate the pieces together to display the tweet.
+            // bonus: line break at the end to make it more readable.
+            console.log((i+1)+'/'+tweets.length+' '+tweets[i]+'\n');
+        }
+    } else {
+        console.log(err);
+    }
+});
